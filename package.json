@@ -1,0 +1,178 @@
+{
+  "name": "nexus-ai",
+  "version": "1.0.0",
+  "description": "Revolutionary AI development framework that prevents context loss and enables autonomous project creation",
+  "main": "index.js",
+  "bin": {
+    "nexus": "./bin/nexus.js",
+    "nexus-ai": "./bin/nexus.js",
+    "nexus-claude": "./bin/nexus-claude.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "build": "npm run build:core && npm run build:web",
+    "build:core": "tsc -p tsconfig.json",
+    "build:web": "webpack --mode production",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint . --ext .ts,.js",
+    "lint:fix": "eslint . --ext .ts,.js --fix",
+    "format": "prettier --write .",
+    "setup": "node scripts/setup.js",
+    "install:deps": "npm install && npm run setup",
+    "kb:sync": "node scripts/knowledge-base-sync.js",
+    "kb:update": "node scripts/knowledge-base-update.js",
+    "mcp:register": "node scripts/register-mcp-servers.js",
+    "memory:backup": "node scripts/memory-backup.js",
+    "memory:restore": "node scripts/memory-restore.js",
+    "docs:generate": "typedoc --out docs src/",
+    "release": "semantic-release"
+  },
+  "keywords": [
+    "ai",
+    "artificial-intelligence",
+    "claude-code",
+    "gpt",
+    "gemini",
+    "grok",
+    "development-framework",
+    "multi-agent",
+    "persistent-memory",
+    "project-creation",
+    "knowledge-base",
+    "automation",
+    "productivity",
+    "developers",
+    "programming",
+    "universal-ai",
+    "mcp-protocol",
+    "solana",
+    "defi",
+    "web3"
+  ],
+  "author": "Nexus AI Framework Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nexus-framework/nexus-ai"
+  },
+  "bugs": {
+    "url": "https://github.com/nexus-framework/nexus-ai/issues"
+  },
+  "homepage": "https://github.com/nexus-framework/nexus-ai#readme",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-code": "^1.0.0",
+    "@anthropic-ai/sdk": "^0.24.0",
+    "archiver": "^6.0.1",
+    "@google-ai/generativelanguage": "^2.5.0",
+    "@huggingface/inference": "^2.6.4",
+    "@langchain/community": "^0.2.20",
+    "@langchain/core": "^0.2.20",
+    "@langchain/openai": "^0.2.5",
+    "@pinecone-database/pinecone": "^2.2.2",
+    "@supabase/supabase-js": "^2.38.0",
+    "axios": "^1.12.2",
+    "chalk": "^5.6.2",
+    "cheerio": "^1.0.0-rc.12",
+    "commander": "^11.0.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "fs-extra": "^11.3.2",
+    "inquirer": "^9.3.8",
+    "ioredis": "^5.3.2",
+    "js-yaml": "^4.1.0",
+    "langchain": "^0.2.11",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "node-fetch": "^3.3.2",
+    "openai": "^4.52.0",
+    "ora": "^9.0.0",
+    "playwright": "^1.40.0",
+    "puppeteer": "^21.5.2",
+    "redis": "^4.6.10",
+    "semver": "^7.5.4",
+    "simple-git": "^3.20.0",
+    "socket.io": "^4.7.4",
+    "tiktoken": "^1.0.10",
+    "tree-sitter": "^0.20.4",
+    "uuid": "^9.0.1",
+    "winston": "^3.11.0",
+    "ws": "^8.14.2",
+    "yaml": "^2.3.4"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/fs-extra": "^11.0.4",
+    "@types/jest": "^29.5.8",
+    "@types/js-yaml": "^4.0.9",
+    "@types/lodash": "^4.14.202",
+    "@types/node": "^20.9.0",
+    "@types/semver": "^7.5.6",
+    "@types/uuid": "^9.0.7",
+    "@types/ws": "^8.5.9",
+    "@typescript-eslint/eslint-plugin": "^6.12.0",
+    "@typescript-eslint/parser": "^6.12.0",
+    "eslint": "^8.54.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.1",
+    "prettier": "^3.1.0",
+    "semantic-release": "^22.0.5",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.1",
+    "typedoc": "^0.25.4",
+    "typescript": "^5.2.2",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "peerDependencies": {
+    "git": ">=2.0.0"
+  },
+  "optionalDependencies": {
+    "nvidia-ml-py": "^12.535.0",
+    "pytorch": "^2.0.0",
+    "tensorflow": "^4.10.0"
+  },
+  "nexusConfig": {
+    "version": "1.0.0-beta",
+    "apiVersion": "v1",
+    "minMemoryMB": 2048,
+    "defaultModels": {
+      "reasoning": "gpt-4",
+      "coding": "claude-3.5-sonnet",
+      "multimodal": "gemini-pro-vision",
+      "realtime": "grok-3"
+    },
+    "knowledgeBases": [
+      "solana-ecosystem",
+      "web3-protocols",
+      "ai-frameworks",
+      "security-patterns"
+    ],
+    "features": {
+      "persistentMemory": true,
+      "multiModelRouting": true,
+      "autonomousResearch": true,
+      "knowledgeBaseIntegration": true,
+      "gitStateTracking": true,
+      "qualityGates": true
+    }
+  },
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/nexus-ai"
+    },
+    {
+      "type": "opencollective",
+      "url": "https://opencollective.com/nexus-ai"
+    }
+  ]
+}
