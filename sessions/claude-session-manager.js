@@ -189,7 +189,7 @@ class ClaudeSessionManager {
         this.logger.info(`🏁 Ended session: ${id}`);
         
         // Update average duration
-        this.updateAverageD uration(duration);
+        this.updateAverageDuration(duration);
     }
     
     /**
@@ -824,4 +824,4 @@ class ClaudeSessionManager {
     }
 }
 
-module.exports = { ClaudeSessionManager };
+module.exports = ClaudeSessionManager;

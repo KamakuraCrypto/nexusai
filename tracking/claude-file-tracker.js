@@ -770,4 +770,4 @@ class ClaudeFileTracker {
     }
 }
 
-module.exports = { ClaudeFileTracker };
+module.exports = ClaudeFileTracker;

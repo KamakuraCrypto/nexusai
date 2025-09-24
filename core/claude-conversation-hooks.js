@@ -550,7 +550,7 @@ class ClaudeConversationHooks extends EventEmitter {
             messagesProcessed: context.messageCount || 0,
             artifactsCreated: context.artifacts ? context.artifacts.size : 0,
             filesModified: context.fileReferences ? context.fileReferences.size : 0,
-            decisionsM Made: context.decisions ? context.decisions.length : 0,
+            decisionsMade: context.decisions ? context.decisions.length : 0,
             errorsResolved: context.errors ? context.errors.filter(e => e.resolved).length : 0,
             currentTask: context.currentTask || 'Unknown'
         };
@@ -809,4 +809,4 @@ Summary: ${JSON.stringify(state.summary, null, 2)}
     }
 }
 
-module.exports = { ClaudeConversationHooks };
+module.exports = ClaudeConversationHooks;

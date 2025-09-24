@@ -795,4 +795,4 @@ ${this.formatStyleGuide(patterns.styleGuide)}
     }
 }
 
-module.exports = { ClaudeSummarizer };
+module.exports = ClaudeSummarizer;

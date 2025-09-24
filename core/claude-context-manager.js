@@ -767,4 +767,4 @@ class ClaudeContextManager {
     }
 }
 
-module.exports = { ClaudeContextManager };
+module.exports = ClaudeContextManager;

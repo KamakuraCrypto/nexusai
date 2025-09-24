@@ -859,4 +859,4 @@ Please provide task details to continue.`;
     }
 }
 
-module.exports = { ClaudeContextRestorer };
+module.exports = ClaudeContextRestorer;

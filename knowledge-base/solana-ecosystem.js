@@ -4,7 +4,13 @@
  * Supports Meteora, Jupiter, Solana Wallet Kit, and other major protocols
  */
 
-const axios = require('axios');
+// Use axios if available, otherwise use stub
+let axios;
+try {
+    axios = require('axios');
+} catch (e) {
+    axios = require('../utils/axios-stub');
+}
 const fs = require('fs-extra');
 const path = require('path');
 const { Logger } = require('../utils/logger');

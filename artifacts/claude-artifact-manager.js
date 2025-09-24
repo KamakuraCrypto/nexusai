@@ -986,4 +986,4 @@ class ClaudeArtifactManager {
     }
 }
 
-module.exports = { ClaudeArtifactManager };
+module.exports = ClaudeArtifactManager;
