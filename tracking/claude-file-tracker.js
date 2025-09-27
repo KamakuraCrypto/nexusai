@@ -338,6 +338,26 @@ class ClaudeFileTracker {
     }
     
     /**
+     * Get all tracked files for checkpointing
+     */
+    async getTrackedFiles() {
+        const trackedFiles = {};
+        
+        for (const [filePath, fileEntry] of this.trackedFiles.entries()) {
+            trackedFiles[filePath] = {
+                priority: fileEntry.priority,
+                lastAccess: fileEntry.lastAccess,
+                checksum: fileEntry.checksum,
+                changeCount: fileEntry.changeCount,
+                claudeGenerated: fileEntry.claudeGenerated,
+                operations: fileEntry.operations.slice(-5) // Keep last 5 operations
+            };
+        }
+        
+        return trackedFiles;
+    }
+    
+    /**
      * Build dependency graph
      */
     async buildDependencyGraph() {

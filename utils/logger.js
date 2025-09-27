@@ -5,22 +5,8 @@
 const fs = require('fs-extra');
 const path = require('path');
 
-// Try to load chalk if available
-let chalk;
-try {
-    chalk = require('chalk');
-} catch (e) {
-    // Create a stub chalk if not available
-    chalk = {
-        green: (str) => str,
-        yellow: (str) => str,
-        red: (str) => str,
-        blue: (str) => str,
-        cyan: (str) => str,
-        gray: (str) => str,
-        bold: (str) => str
-    };
-}
+// Use local colors utility for consistency
+const chalk = require('./colors');
 
 class Logger {
     constructor(component = 'Nexus', options = {}) {

@@ -39,6 +39,12 @@ async function initializeManagers() {
     contextRestorer = new ClaudeContextRestorer(config.restoration || {});
     artifactManager = new ClaudeArtifactManager(config.artifacts || {});
     
+    // Initialize managers
+    if (contextManager.initialize) await contextManager.initialize();
+    if (sessionManager.initialize) await sessionManager.initialize();
+    if (fileTracker.initialize) await fileTracker.initialize();
+    if (artifactManager.initialize) await artifactManager.initialize();
+    
     // Connect components (if methods exist)
     if (contextManager.setSummarizer) contextManager.setSummarizer(summarizer);
     if (conversationHooks.setContextManager) conversationHooks.setContextManager(contextManager);
@@ -52,29 +58,44 @@ async function initializeManagers() {
 
 program
     .name('nclaude')
-    .description('🤖 Claude Code Integration - Never lose work again')
-    .version('1.0.0')
+    .description('🤖 Nexus AI - Professional Claude Code Integration Framework')
+    .version('3.0.0')
     .addHelpText('before', `
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  NEXUS CLAUDE - Bulletproof Claude Sessions
+  NEXUS AI - Enterprise Claude Code Framework
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Professional conversation capture, monitoring, and recovery tools
 `)
     .addHelpText('after', `
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-EXAMPLES:
+QUICK START:
   
-  nclaude init              # First time setup
-  nclaude status            # Check token usage
-  nclaude save "checkpoint" # Save before risky changes
-  nclaude restore           # Restore after issues
-  nclaude help [command]    # Detailed help
+  nclaude init                    # Initialize in your project
+  nclaude monitor dashboard       # View system status
+  nclaude transcript list         # Show captured conversations
+  nclaude help-all               # Complete documentation
+
+NEW FEATURES:
+  
+  nclaude transcript <action>     # Conversation capture system
+  nclaude monitor [live]          # Real-time monitoring dashboard  
+  nclaude recover <action>        # File recovery and timeline tools
 
 CLAUDE INTEGRATION:
   
-  You can also use these as slash commands in Claude:
-  /nclaude status
-  /nclaude save
-  /nclaude restore
+  Slash commands in Claude Code:
+  /nclaude status                 # Check current session
+  /nclaude save "checkpoint"      # Create backup point
+  /nclaude restore               # Restore from backup
+
+ENTERPRISE FEATURES:
+  
+  • Complete conversation capture and analysis
+  • Real-time monitoring with live dashboard  
+  • Professional file recovery and versioning
+  • Automatic backup and session management
+  • Git-like timeline and object storage
 
 DOCUMENTATION:
   https://github.com/nexus-framework/nexus-ai-claude
@@ -149,11 +170,26 @@ backups/
 `;
             await fs.writeFile(gitignorePath, gitignoreContent.trim());
             
-            spinner.succeed(chalk.green('Claude Code integration initialized successfully!'));
+            // Auto-start the watcher daemon
+            spinner.text = 'Starting timeline watcher...';
+            const WatcherDaemon = require('../utils/watcher-daemon');
+            const daemon = new WatcherDaemon();
+            const watcherStarted = await daemon.start({ silent: true });
+            
+            if (watcherStarted) {
+                spinner.succeed(chalk.green('Claude Code integration initialized successfully!'));
+                console.log(chalk.green('✅ Timeline watcher started automatically'));
+            } else {
+                spinner.succeed(chalk.green('Claude Code integration initialized successfully!'));
+                console.log(chalk.yellow('⚠️ Timeline watcher could not be started automatically'));
+                console.log(chalk.cyan('Run'), chalk.yellow('nclaude timeline watch'), chalk.cyan('to start it manually'));
+            }
+            
             console.log(chalk.cyan('\nNext steps:'));
-            console.log('  1. Run', chalk.yellow('nexus claude status'), 'to check context usage');
-            console.log('  2. Run', chalk.yellow('nexus claude save'), 'to manually save session');
-            console.log('  3. Run', chalk.yellow('nexus claude help'), 'for all available commands');
+            console.log('  1. Run', chalk.yellow('nclaude status'), 'to check context usage');
+            console.log('  2. Run', chalk.yellow('nclaude save'), 'to manually save session');
+            console.log('  3. Run', chalk.yellow('nclaude timeline show'), 'to view timeline');
+            console.log('  4. Run', chalk.yellow('nclaude help'), 'for all available commands');
             
         } catch (error) {
             spinner.fail(chalk.red('Failed to initialize Claude integration'));
@@ -189,6 +225,7 @@ program
                 console.log(chalk.cyan('Description:'), checkpoint.description);
             }
             
+            process.exit(0);
         } catch (error) {
             spinner.fail(chalk.red('Failed to save session'));
             console.error(error);
@@ -398,6 +435,30 @@ program
                 artifacts.forEach(a => languages.add(a.language));
                 console.log(`  Languages: ${Array.from(languages).join(', ')}`);
             }
+            console.log();
+            
+            // Watcher daemon status
+            try {
+                const WatcherDaemon = require('../utils/watcher-daemon');
+                const daemon = new WatcherDaemon();
+                const watcherStatus = await daemon.getStatus();
+                
+                console.log('Timeline Watcher:');
+                if (watcherStatus.running) {
+                    console.log(`  Status: ${chalk.green('✅ Running')} (PID: ${watcherStatus.pid})`);
+                    if (watcherStatus.uptime) {
+                        const hours = Math.floor(watcherStatus.uptime / (1000 * 60 * 60));
+                        const minutes = Math.floor((watcherStatus.uptime % (1000 * 60 * 60)) / (1000 * 60));
+                        console.log(`  Uptime: ${hours}h ${minutes}m`);
+                    }
+                } else {
+                    console.log(`  Status: ${chalk.red('❌ Not running')}`);
+                    console.log('  Use: nclaude timeline watch --start to begin tracking');
+                }
+            } catch (error) {
+                console.log('Timeline Watcher:');
+                console.log(`  Status: ${chalk.yellow('⚠️ Error checking status')}`);
+            }
             
             if (options.detailed) {
                 console.log(chalk.cyan('\n═══ Detailed Breakdown ═══\n'));
@@ -417,6 +478,7 @@ program
                 console.log(`  Total: ${(memUsage.rss / 1024 / 1024).toFixed(2)} MB`);
             }
             
+            process.exit(0);
         } catch (error) {
             console.error(chalk.red('Failed to get status:'), error.message);
             process.exit(1);
@@ -723,6 +785,161 @@ program
         }
     });
 
+// Setup Claude Code hooks
+program
+    .command('setup-hooks')
+    .description('Setup Claude Code hooks for automatic integration')
+    .option('-f, --force', 'Force reinstall hooks even if they exist')
+    .action(async (options) => {
+        const spinner = ora('Setting up Claude Code hooks...').start();
+        
+        try {
+            const projectDir = process.cwd();
+            const claudeDir = path.join(projectDir, '.claude');
+            const hooksDir = path.join(claudeDir, 'hooks');
+            
+            // Create directories
+            await fs.ensureDir(hooksDir);
+            
+            // Define hooks
+            const hooks = {
+                'pre-compact.sh': `#!/bin/bash
+# Nexus AI PreCompact Hook
+set -e
+export PATH="$PATH:/usr/local/bin:/usr/bin"
+if ! command -v nclaude &> /dev/null; then exit 0; fi
+HOOK_INPUT=$(cat)
+TOKEN_COUNT=$(echo "$HOOK_INPUT" | jq -r '.token_count // "unknown"' 2>/dev/null || echo "unknown")
+nclaude save --name "auto-compact-$(date +%Y%m%d-%H%M%S)" --description "Auto-save at $TOKEN_COUNT tokens" 2>&1 >&2 || true
+exit 0`,
+                
+                'session-start.sh': `#!/bin/bash
+# Nexus AI SessionStart Hook
+set -e
+export PATH="$PATH:/usr/local/bin:/usr/bin"
+if ! command -v nclaude &> /dev/null; then exit 0; fi
+if [ ! -f ".nexus/claude-config.json" ]; then
+    nclaude init --force 2>&1 >&2 || true
+fi
+nclaude status 2>&1 | grep -E "Token|Session" >&2 || true
+exit 0`,
+                
+                'session-end.sh': `#!/bin/bash
+# Nexus AI SessionEnd Hook
+set -e
+export PATH="$PATH:/usr/local/bin:/usr/bin"
+if ! command -v nclaude &> /dev/null; then exit 0; fi
+nclaude save --name "session-end-$(date +%Y%m%d-%H%M%S)" --description "Session end save" 2>&1 >&2 || true
+exit 0`,
+                
+                'post-tool-use.sh': `#!/bin/bash
+# Nexus AI PostToolUse Hook
+set -e
+export PATH="$PATH:/usr/local/bin:/usr/bin"
+NEXUS_DIR="\${CLAUDE_PROJECT_DIR:-.}/.nexus"
+if ! command -v nclaude &> /dev/null; then exit 0; fi
+HOOK_INPUT=$(cat)
+TOOL_NAME=$(echo "$HOOK_INPUT" | jq -r '.tool_name // ""' 2>/dev/null || echo "")
+if [[ "$TOOL_NAME" =~ ^(Read|Edit|Write)$ ]]; then
+    FILE_PATH=$(echo "$HOOK_INPUT" | jq -r '.tool_params.file_path // .tool_params.path // ""' 2>/dev/null || echo "")
+    if [ -n "$FILE_PATH" ]; then
+        mkdir -p "$NEXUS_DIR/sessions"
+        TRACKING_FILE="$NEXUS_DIR/sessions/current_tracking.json"
+        if [ -f "$TRACKING_FILE" ]; then
+            jq ". + {\\"$(date +%s)\\": {tool: \\"$TOOL_NAME\\", file: \\"$FILE_PATH\\"}}" "$TRACKING_FILE" > "$TRACKING_FILE.tmp" && mv "$TRACKING_FILE.tmp" "$TRACKING_FILE" 2>/dev/null || true
+        else
+            echo "{\\"$(date +%s)\\": {\\"tool\\": \\"$TOOL_NAME\\", \\"file\\": \\"$FILE_PATH\\"}}" > "$TRACKING_FILE"
+        fi
+    fi
+fi
+exit 0`
+            };
+            
+            // Check if hooks already exist
+            let existingHooks = 0;
+            for (const hookName of Object.keys(hooks)) {
+                if (await fs.exists(path.join(hooksDir, hookName))) {
+                    existingHooks++;
+                }
+            }
+            
+            if (existingHooks > 0 && !options.force) {
+                spinner.warn(`Found ${existingHooks} existing hooks. Use --force to overwrite.`);
+                return;
+            }
+            
+            // Write hook files
+            for (const [filename, content] of Object.entries(hooks)) {
+                const hookPath = path.join(hooksDir, filename);
+                await fs.writeFile(hookPath, content);
+                await fs.chmod(hookPath, 0o755);
+            }
+            
+            // Update settings.local.json
+            const settingsPath = path.join(claudeDir, 'settings.local.json');
+            let settings = {};
+            
+            if (await fs.exists(settingsPath)) {
+                try {
+                    settings = await fs.readJson(settingsPath);
+                } catch (e) {
+                    settings = {};
+                }
+            }
+            
+            // Add hook configurations
+            if (!settings.hooks) {
+                settings.hooks = {};
+            }
+            
+            settings.hooks = {
+                ...settings.hooks,
+                preCompact: ".claude/hooks/pre-compact.sh",
+                sessionStart: ".claude/hooks/session-start.sh",
+                sessionEnd: ".claude/hooks/session-end.sh",
+                postToolUse: ".claude/hooks/post-tool-use.sh"
+            };
+            
+            // Add permissions for nclaude
+            if (!settings.permissions) {
+                settings.permissions = { allow: [], deny: [], ask: [] };
+            }
+            if (!settings.permissions.allow) {
+                settings.permissions.allow = [];
+            }
+            
+            const requiredPermissions = [
+                "Bash(nclaude:*)",
+                "Read(**/.nexus/**)",
+                "Write(**/.nexus/**)"
+            ];
+            
+            for (const perm of requiredPermissions) {
+                if (!settings.permissions.allow.includes(perm)) {
+                    settings.permissions.allow.push(perm);
+                }
+            }
+            
+            await fs.writeJson(settingsPath, settings, { spaces: 2 });
+            
+            spinner.succeed(chalk.green('Claude Code hooks installed successfully!'));
+            
+            console.log(chalk.cyan('\n✅ The following hooks are now active:'));
+            console.log('  • PreCompact: Auto-saves before context compaction');
+            console.log('  • SessionStart: Initializes Nexus AI tracking');
+            console.log('  • SessionEnd: Saves final session state');
+            console.log('  • PostToolUse: Tracks file operations');
+            
+            console.log(chalk.cyan('\n💡 These hooks will run automatically during Claude Code usage.'));
+            console.log('   No manual intervention required!');
+            
+        } catch (error) {
+            spinner.fail(chalk.red('Failed to setup hooks'));
+            console.error(error);
+            process.exit(1);
+        }
+    });
+
 // Reset everything
 program
     .command('reset')
@@ -777,6 +994,358 @@ program
             console.error(error);
             process.exit(1);
         }
+    });
+
+// Timeline command
+program
+    .command('timeline <action>')
+    .description('Timeline and time-travel functionality')
+    .option('-n, --limit <number>', 'Number of items to show')
+    .option('-p, --preview', 'Preview changes without applying')
+    .option('-t, --temp', 'Use temporary directory')
+    .option('-d, --detach', 'Run in background')
+    .action(async (action, options) => {
+        // Delegate to timeline command
+        const { execFileSync } = require('child_process');
+        const timelinePath = path.join(__dirname, 'nclaude-timeline.js');
+        
+        const args = [action];
+        if (options.limit) args.push('-n', options.limit);
+        if (options.preview) args.push('-p');
+        if (options.temp) args.push('-t');
+        if (options.detach) args.push('-d');
+        
+        try {
+            execFileSync('node', [timelinePath, ...args], { stdio: 'inherit' });
+        } catch (error) {
+            process.exit(1);
+        }
+    })
+    .on('--help', () => {
+        console.log('');
+        console.log('Timeline Actions:');
+        console.log('  watch              Start file system watcher');
+        console.log('  show               Display conversation timeline');
+        console.log('  restore <turn>     Restore files to specific turn');
+        console.log('  compare <t1> <t2>  Compare two turns');
+        console.log('  turn               Mark new conversation turn');
+        console.log('  snapshot [desc]    Create snapshot of current state');
+        console.log('');
+        console.log('Examples:');
+        console.log('  $ nclaude timeline watch');
+        console.log('  $ nclaude timeline show');
+        console.log('  $ nclaude timeline restore 8');
+        console.log('  $ nclaude timeline compare 8 12');
+    });
+
+// Transcript command - conversation data access
+program
+    .command('transcript <action> [sessionId]')
+    .description('Access captured conversation transcripts')
+    .option('-s, --session <id>', 'Specify session ID')
+    .option('-l, --limit <number>', 'Limit number of results')
+    .action(async (action, sessionId, options) => {
+        const { execFileSync } = require('child_process');
+        const transcriptPath = path.join(__dirname, 'nclaude-transcript.js');
+        
+        try {
+            const args = [action];
+            // Add sessionId as positional argument for show command
+            if (sessionId) {
+                args.push(sessionId);
+            }
+            if (options.session) args.push('--session', options.session);
+            if (options.limit) args.push('--limit', options.limit);
+            
+            execFileSync('node', [transcriptPath, ...args], { 
+                stdio: 'inherit',
+                cwd: process.cwd()
+            });
+        } catch (error) {
+            console.error(chalk.red('Transcript command failed'));
+            process.exit(1);
+        }
+    });
+
+// Monitor command - system dashboard
+program
+    .command('monitor [command]')
+    .description('System monitoring and dashboard')
+    .option('-r, --refresh <seconds>', 'Auto-refresh interval')
+    .option('-l, --live', 'Live monitoring mode')
+    .action(async (command = 'dashboard', options) => {
+        const { execFileSync } = require('child_process');
+        let scriptPath;
+        
+        if (options.live || command === 'live') {
+            scriptPath = path.join(__dirname, 'nclaude-monitor-live.js');
+            command = 'start';
+        } else {
+            scriptPath = path.join(__dirname, 'nclaude-monitor.js');
+        }
+        
+        try {
+            const args = [command];
+            if (options.refresh) args.push('--refresh', options.refresh);
+            
+            execFileSync('node', [scriptPath, ...args], { 
+                stdio: 'inherit',
+                cwd: process.cwd()
+            });
+        } catch (error) {
+            console.error(chalk.red('Monitor command failed'));
+            process.exit(1);
+        }
+    });
+
+// Recovery command - restore functionality  
+program
+    .command('recover <action> [target] [id]')
+    .description('Recovery and restoration tools')
+    .option('-f, --file <path>', 'File path for recovery')
+    .option('-i, --id <id>', 'Edit or backup ID')
+    .option('-t, --timestamp <time>', 'Backup timestamp')
+    .option('-l, --limit <number>', 'Limit number of results')
+    .action(async (action, target, id, options) => {
+        const { execFileSync } = require('child_process');
+        const recoveryPath = path.join(__dirname, 'nclaude-recover.js');
+        
+        try {
+            const args = [action];
+            // Add positional arguments
+            if (target) args.push(target);
+            if (id) args.push(id);
+            // Add optional arguments
+            if (options.file) args.push(options.file);
+            if (options.id) args.push(options.id);
+            if (options.timestamp) args.push(options.timestamp);
+            if (options.limit) args.push(options.limit);
+            
+            execFileSync('node', [recoveryPath, ...args], { 
+                stdio: 'inherit',
+                cwd: process.cwd()
+            });
+        } catch (error) {
+            console.error(chalk.red('Recovery command failed'));
+            process.exit(1);
+        }
+    });
+
+// Comprehensive help command
+program
+    .command('help-all')
+    .description('Show comprehensive help for all Nexus AI features')
+    .action(async () => {
+        console.log(`
+${chalk.cyan.bold('═══════════════════════════════════════════════════════════════════')}
+${chalk.cyan.bold('                    NEXUS AI - COMPREHENSIVE HELP                    ')}
+${chalk.cyan.bold('═══════════════════════════════════════════════════════════════════')}
+
+${chalk.yellow.bold('🎯 OVERVIEW:')}
+Nexus AI is a comprehensive Claude Code integration framework that provides:
+• Complete conversation capture and analysis
+• Real-time monitoring and dashboard
+• File recovery and timeline restoration
+• Automatic backup and session management
+• Professional-grade data safety and workflow tools
+
+${chalk.yellow.bold('📋 CORE COMMANDS:')}
+
+${chalk.green('nclaude init [options]')}
+  Initialize Nexus AI in your project
+  Options:
+    -f, --force       Force reinitialize
+  Example: nclaude init --force
+
+${chalk.green('nclaude status [options]')}
+  Show current session status and token usage
+  Options:
+    -v, --verbose     Detailed status information
+  Example: nclaude status --verbose
+
+${chalk.green('nclaude save [name] [options]')}
+  Create checkpoint/backup of current state
+  Options:
+    -m, --message     Add description message
+  Example: nclaude save "before-refactor" --message "Working auth system"
+
+${chalk.green('nclaude restore [checkpoint] [options]')}
+  Restore from checkpoint or backup
+  Options:
+    --list           Show available checkpoints
+    -f, --force      Force restore without confirmation
+  Example: nclaude restore "before-refactor"
+
+${chalk.green('nclaude compact [options]')}
+  Manually compact conversation to save tokens
+  Options:
+    --preview        Show what will be compacted
+  Example: nclaude compact --preview
+
+${chalk.yellow.bold('💬 CONVERSATION COMMANDS:')}
+
+${chalk.green('nclaude transcript <action> [sessionId]')}
+  Access captured conversation transcripts
+  Actions:
+    list             List all captured sessions
+    show <id>        Show conversation details
+    parse <file>     Parse transcript file
+  Options:
+    -s, --session    Specify session ID
+    -l, --limit      Limit number of results
+  Examples:
+    nclaude transcript list
+    nclaude transcript show current-session
+    nclaude transcript parse ~/.claude/projects/.../session.jsonl
+
+${chalk.yellow.bold('📊 MONITORING COMMANDS:')}
+
+${chalk.green('nclaude monitor [command]')}
+  System monitoring and dashboard
+  Commands:
+    dashboard        Show monitoring dashboard (default)
+    live            Start live monitoring mode
+  Options:
+    -r, --refresh    Auto-refresh interval
+    -l, --live       Live monitoring mode
+  Examples:
+    nclaude monitor dashboard
+    nclaude monitor live
+    nclaude monitor --refresh 5
+
+${chalk.yellow.bold('🔧 RECOVERY COMMANDS:')}
+
+${chalk.green('nclaude recover <action> [target] [id]')}
+  Recovery and restoration tools
+  Actions:
+    list-edits <file>         Show edit history for file
+    restore-file <file> <id>  Restore file to specific edit
+    list-conversations        Show available conversations
+    restore-conversation <id> Show conversation content
+    list-backups             Show available backups
+    restore-backup <time>     Restore from backup
+    show-timeline [limit]     Show activity timeline
+  Options:
+    -f, --file       File path for recovery
+    -i, --id         Edit or backup ID
+    -t, --timestamp  Backup timestamp
+    -l, --limit      Limit number of results
+  Examples:
+    nclaude recover list-edits ./src/main.js
+    nclaude recover restore-file ./src/main.js edit-123
+    nclaude recover show-timeline 20
+
+${chalk.yellow.bold('📦 EXPORT/IMPORT COMMANDS:')}
+
+${chalk.green('nclaude export [options]')}
+  Export session data and artifacts
+  Options:
+    --format         Export format (json, markdown, archive)
+    --output         Output directory
+    --include        What to include (artifacts, sessions, files)
+  Example: nclaude export --format markdown --output ./backup
+
+${chalk.green('nclaude search <query> [options]')}
+  Search through artifacts and conversations
+  Options:
+    --type          Search type (code, conversation, files)
+    --format        Output format
+  Example: nclaude search "authentication" --type code
+
+${chalk.yellow.bold('🛠️ UTILITY COMMANDS:')}
+
+${chalk.green('nclaude clean [options]')}
+  Clean old sessions and artifacts
+  Options:
+    --days          Keep last N days (default: 30)
+    --force         Skip confirmation
+  Example: nclaude clean --days 14
+
+${chalk.green('nclaude hooks [options]')}
+  Manage Claude conversation hooks
+  Options:
+    --list          List all hooks
+    --test          Test hook functionality
+  Example: nclaude hooks --list
+
+${chalk.green('nclaude timeline <action> [options]')}
+  Timeline and file versioning
+  Actions:
+    watch           Start file watcher
+    show            Show timeline
+    restore <id>    Restore to specific point
+    compare <a> <b> Compare two points
+  Examples:
+    nclaude timeline watch
+    nclaude timeline show
+    nclaude timeline restore 8
+
+${chalk.yellow.bold('🔍 DIRECT ACCESS COMMANDS:')}
+
+${chalk.cyan('These commands can also be run directly:')}
+${chalk.green('nclaude-transcript')}     Advanced transcript management
+${chalk.green('nclaude-monitor')}        Real-time system monitoring  
+${chalk.green('nclaude-recover')}        File and data recovery tools
+${chalk.green('nclaude-export')}         Data export utilities
+
+${chalk.yellow.bold('💡 CLAUDE CODE INTEGRATION:')}
+
+${chalk.cyan('Slash Commands (use in Claude):')}
+/nclaude status              Check current status
+/nclaude save <name>         Create checkpoint
+/nclaude restore            Restore last checkpoint
+/nclaude compact            Compact conversation
+
+${chalk.cyan('Automatic Hooks:')}
+• UserPromptSubmit          Captures user prompts
+• Stop                      Captures AI responses when complete
+• PostToolUse              Tracks file operations
+• SessionStart/End         Manages session lifecycle
+• PreCompact               Handles conversation compaction
+
+${chalk.yellow.bold('📁 DATA ORGANIZATION:')}
+
+${chalk.cyan('.nexus/ Directory Structure:')}
+├── conversations/          Captured conversation data
+├── responses/             AI responses and thinking
+├── edits/                File edit history with diffs
+├── timeline/             Git-like object storage
+├── backups/              Automatic backup storage
+├── claude/               Claude Code integration data
+└── sessions/             Session management
+
+${chalk.yellow.bold('🚀 GETTING STARTED:')}
+
+${chalk.cyan('1. Initialize in your project:')}
+   cd your-project && nclaude init
+
+${chalk.cyan('2. Check system status:')}
+   nclaude monitor dashboard
+
+${chalk.cyan('3. View captured conversations:')}
+   nclaude transcript list
+
+${chalk.cyan('4. Create a checkpoint:')}
+   nclaude save "initial-setup"
+
+${chalk.cyan('5. Start live monitoring:')}
+   nclaude monitor live
+
+${chalk.yellow.bold('📚 DOCUMENTATION:')}
+• Full Documentation: README.md
+• Hook Configuration: .claude/settings.local.json
+• Configuration: .nexus/claude-config.json
+• Troubleshooting: nclaude help <command>
+
+${chalk.yellow.bold('🔗 SUPPORT:')}
+• Repository: https://github.com/nexus-framework/nexus-ai-claude
+• Issues: https://github.com/nexus-framework/nexus-ai-claude/issues
+• License: MIT (see LICENSE file)
+
+${chalk.cyan.bold('═══════════════════════════════════════════════════════════════════')}
+${chalk.yellow('TIP:')} Use ${chalk.green('nclaude help <command>')} for detailed help on specific commands
+${chalk.cyan.bold('═══════════════════════════════════════════════════════════════════')}
+`);
     });
 
 program.parse(process.argv);

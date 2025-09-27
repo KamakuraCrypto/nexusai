@@ -68,6 +68,15 @@ npm link --quiet
 echo ""
 echo "✨ Installation complete!"
 echo ""
+
+# Setup Claude Code hooks if we're in a Claude Code environment
+if [ -n "$CLAUDE_PROJECT_DIR" ] || [ -f ".claude/settings.local.json" ] || [ -d ".claude" ]; then
+    echo "🔗 Detected Claude Code environment. Setting up hooks..."
+    if [ -f "$INSTALL_DIR/setup-claude-hooks.sh" ]; then
+        bash "$INSTALL_DIR/setup-claude-hooks.sh" "$PWD"
+    fi
+fi
+
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 echo "🚀 Quick Start:"

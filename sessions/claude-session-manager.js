@@ -141,8 +141,10 @@ class ClaudeSessionManager {
         // Update active session
         await this.updateActiveSession(session.id);
         
-        // Trigger hook
-        await this.hooks.trigger('onSessionStart', { sessionId: session.id });
+        // Trigger hook (if available)
+        if (this.hooks && this.hooks.trigger) {
+            await this.hooks.trigger('onSessionStart', { sessionId: session.id });
+        }
         
         this.logger.info(`🆕 Started new session: ${session.id}`);
         
@@ -174,11 +176,13 @@ class ClaudeSessionManager {
         await this.saveSession(id);
         
         // Trigger hook
-        await this.hooks.trigger('onSessionEnd', {
-            sessionId: id,
-            duration,
-            metrics: session.metrics
-        });
+        if (this.hooks && this.hooks.trigger) {
+            await this.hooks.trigger('onSessionEnd', {
+                sessionId: id,
+                duration,
+                metrics: session.metrics
+            });
+        }
         
         // Clear current if it's the active session
         if (this.currentSession?.id === id) {
@@ -320,10 +324,12 @@ class ClaudeSessionManager {
             await this.restoreSessionContext(session);
             
             // Trigger hook
-            await this.hooks.trigger('onSessionResume', {
-                sessionId: session.id,
-                timeSinceActivity
-            });
+            if (this.hooks && this.hooks.trigger) {
+                await this.hooks.trigger('onSessionResume', {
+                    sessionId: session.id,
+                    timeSinceActivity
+                });
+            }
             
             this.logger.info(`▶️ Resumed session: ${session.id}`);
             this.metrics.totalRestores++;
@@ -372,15 +378,34 @@ class ClaudeSessionManager {
     /**
      * Create session checkpoint
      */
-    async createCheckpoint(label = null) {
+    async createCheckpoint(checkpointData) {
         if (!this.currentSession) return null;
+        
+        // Handle both old format (string label) and new format (object)
+        let label, name, description, context, files, artifacts;
+        
+        if (typeof checkpointData === 'string') {
+            label = checkpointData;
+            name = checkpointData;
+        } else if (typeof checkpointData === 'object' && checkpointData !== null) {
+            label = checkpointData.name || checkpointData.label;
+            name = checkpointData.name || checkpointData.label;
+            description = checkpointData.description;
+            context = checkpointData.context;
+            files = checkpointData.files;
+            artifacts = checkpointData.artifacts;
+        }
         
         const checkpoint = {
             id: crypto.randomBytes(8).toString('hex'),
             sessionId: this.currentSession.id,
             timestamp: new Date().toISOString(),
+            name: name || `checkpoint-${Date.now()}`,
             label,
-            context: this.deepCloneContext(this.currentSession.context),
+            description,
+            context: context || this.deepCloneContext(this.currentSession.context),
+            files,
+            artifacts,
             metrics: { ...this.currentSession.metrics }
         };
         
@@ -406,7 +431,7 @@ class ClaudeSessionManager {
         
         this.logger.info(`📸 Created checkpoint: ${checkpoint.id} ${label ? `(${label})` : ''}`);
         
-        return checkpoint.id;
+        return checkpoint;
     }
     
     /**
@@ -739,12 +764,14 @@ class ClaudeSessionManager {
         }
         
         // Trigger restoration hook
-        await this.hooks.trigger('afterSessionRestore', {
-            sessionId: session.id,
-            messageCount: session.context.messages.length,
-            artifactCount: session.context.artifacts.size,
-            fileCount: session.context.files.size
-        });
+        if (this.hooks && this.hooks.trigger) {
+            await this.hooks.trigger('afterSessionRestore', {
+                sessionId: session.id,
+                messageCount: session.context.messages.length,
+                artifactCount: session.context.artifacts.size,
+                fileCount: session.context.files.size
+            });
+        }
     }
     
     /**
@@ -783,23 +810,25 @@ class ClaudeSessionManager {
      * Register session hooks
      */
     registerHooks() {
-        // Save on pause
-        this.hooks.register('onConversationPause', async () => {
-            await this.saveSession();
-        });
-        
-        // Update metrics on various events
-        this.hooks.register('onArtifactCreation', () => {
-            this.updateMetrics('artifactCreations');
-        });
-        
-        this.hooks.register('onFileOperation', () => {
-            this.updateMetrics('fileOperations');
-        });
-        
-        this.hooks.register('onContextCompaction', () => {
-            this.updateMetrics('compactionCount');
-        });
+        if (this.hooks && this.hooks.register) {
+            // Save on pause
+            this.hooks.register('onConversationPause', async () => {
+                await this.saveSession();
+            });
+            
+            // Update metrics on various events
+            this.hooks.register('onArtifactCreation', () => {
+                this.updateMetrics('artifactCreations');
+            });
+            
+            this.hooks.register('onFileOperation', () => {
+                this.updateMetrics('fileOperations');
+            });
+            
+            this.hooks.register('onContextCompaction', () => {
+                this.updateMetrics('compactionCount');
+            });
+        }
     }
     
     /**

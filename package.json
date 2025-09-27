@@ -1,10 +1,13 @@
 {
   "name": "nexus-ai-claude",
-  "version": "1.0.0",
-  "description": "Claude Code integration framework - Never lose work again with bulletproof context management",
+  "version": "3.0.0",
+  "description": "Professional Claude Code integration framework with enterprise-grade conversation capture, monitoring, and recovery tools",
   "main": "index.js",
   "bin": {
-    "nclaude": "./bin/nclaude.js"
+    "nclaude": "./bin/nclaude.js",
+    "nclaude-transcript": "./bin/nclaude-transcript.js",
+    "nclaude-monitor": "./bin/nclaude-monitor.js",
+    "nclaude-recover": "./bin/nclaude-recover.js"
   },
   "scripts": {
     "start": "node index.js",
@@ -14,10 +17,18 @@
     "claude",
     "claude-code",
     "ai",
+    "conversation-capture",
+    "monitoring",
+    "recovery",
+    "enterprise",
+    "professional",
     "context-management",
     "session-persistence",
     "development-tools",
-    "cli"
+    "cli",
+    "backup",
+    "timeline",
+    "transcript"
   ],
   "author": "Nexus AI Framework Team",
   "license": "MIT",
@@ -35,11 +46,13 @@
   },
   "dependencies": {
     "chalk": "^5.3.0",
+    "chokidar": "^4.0.3",
+    "cli-table3": "^0.6.5",
     "commander": "^11.0.0",
+    "diff": "^8.0.2",
     "fs-extra": "^11.1.1",
     "inquirer": "^9.2.10",
+    "node-cron": "^4.2.1",
     "ora": "^7.0.1"
-  },
-  "devDependencies": {},
-  "optionalDependencies": {}
+  }
 }

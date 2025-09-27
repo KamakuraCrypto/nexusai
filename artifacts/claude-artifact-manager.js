@@ -288,6 +288,29 @@ class ClaudeArtifactManager {
     }
     
     /**
+     * Get all artifacts for checkpointing
+     */
+    async getAllArtifacts() {
+        const allArtifacts = {};
+        
+        for (const [id, artifact] of this.artifacts.entries()) {
+            allArtifacts[id] = {
+                content: artifact.content,
+                language: artifact.language,
+                purpose: artifact.purpose,
+                tags: artifact.tags,
+                sessionId: artifact.sessionId,
+                createdAt: artifact.createdAt,
+                updatedAt: artifact.updatedAt,
+                hash: artifact.hash,
+                versionCount: artifact.versions.length
+            };
+        }
+        
+        return allArtifacts;
+    }
+    
+    /**
      * Search artifacts
      */
     async searchArtifacts(query, options = {}) {

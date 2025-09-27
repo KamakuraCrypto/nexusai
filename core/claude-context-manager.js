@@ -590,6 +590,27 @@ class ClaudeContextManager {
     }
     
     /**
+     * Get current context for checkpointing
+     */
+    getCurrentContext() {
+        return {
+            sessionId: this.contextState.sessionId,
+            currentTokens: this.contextState.currentTokens,
+            messageCount: this.contextState.messageCount,
+            startTime: this.contextState.startTime,
+            messages: this.contextState.messages.slice(-50), // Last 50 messages for context
+            artifacts: Array.from(this.contextState.artifacts.entries()),
+            fileReferences: Array.from(this.contextState.fileReferences.entries()),
+            toolUsage: this.contextState.toolUsage.slice(-20),
+            decisions: this.contextState.decisions.slice(-10),
+            errors: this.contextState.errors.slice(-10),
+            compactionCount: this.contextState.compactionCount,
+            lastSave: this.contextState.lastSave,
+            lastCompaction: this.contextState.lastCompaction
+        };
+    }
+
+    /**
      * Get context status
      */
     getStatus() {
