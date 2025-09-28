@@ -1,424 +1,410 @@
-# 🚀 Nexus AI - Professional Claude Code Integration Framework
+# 🧠 Nexus AI Everlasting Memory System
 
-**Enterprise-grade conversation capture, monitoring, and recovery tools for Claude Code users.**
+<div align="center">
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version: 3.0.0](https://img.shields.io/badge/Version-3.0.0-blue.svg)](https://github.com/nexus-framework/nexus-ai-claude)
-[![Node.js](https://img.shields.io/badge/Node.js-14%2B-green.svg)](https://nodejs.org/)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D16.0.0-brightgreen.svg)](https://nodejs.org/)
+[![Platform Support](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-blue.svg)](https://github.com/KamakuraCrypto/nexusai)
+[![GitHub Issues](https://img.shields.io/github/issues/KamakuraCrypto/nexusai.svg)](https://github.com/KamakuraCrypto/nexusai/issues)
+[![GitHub Stars](https://img.shields.io/github/stars/KamakuraCrypto/nexusai.svg)](https://github.com/KamakuraCrypto/nexusai/stargazers)
 
-## ⚡ Overview
+**Never lose context again!** 
 
-Nexus AI is a comprehensive Claude Code integration framework designed for professional developers and teams who require robust data safety, conversation tracking, and workflow management. Built for scalability and enterprise use, it provides complete visibility and control over your Claude Code interactions.
+The Nexus AI Everlasting Memory System provides persistent AI memory across Claude conversation resets, 24/7 file monitoring with Git-like versioning, and intelligent knowledge accumulation.
 
-### 🎯 Core Features
+[🚀 Quick Start](#-quick-start) • [📚 Documentation](#-documentation) • [💡 Features](#-features) • [🛠️ Installation](#️-installation) • [🤝 Contributing](#-contributing)
 
-- **📝 Complete Conversation Capture** - Every prompt, response, and thinking process automatically saved
-- **📊 Real-time Monitoring Dashboard** - Live system status and conversation analytics
-- **🔧 Professional Recovery Tools** - File-level restoration with diff tracking
-- **💾 Enterprise Backup System** - Automated backups with retention policies
-- **🔄 Git-like Timeline Storage** - Version control for all file operations
-- **⚙️ Claude Code Integration** - Seamless hooks for automatic operation
-
-## 🏃‍♂️ Quick Installation
-
-### Automated Installation (Recommended)
-```bash
-# Extract the distribution package
-unzip nexusai-v3-complete.zip
-cd nexusai-distribution
-
-# Run the installer
-./install.sh
-```
-
-### Windows Installation
-```cmd
-# Extract the package, then:
-install.bat
-```
-
-### Manual Installation
-```bash
-npm install
-npm link
-nclaude init
-```
-
-## 📋 Command Reference
-
-### Core Commands
-
-| Command | Description | Example |
-|---------|-------------|---------|
-| `nclaude init` | Initialize framework in project | `nclaude init --force` |
-| `nclaude status` | Show session and token status | `nclaude status --verbose` |
-| `nclaude save [name]` | Create checkpoint/backup | `nclaude save "stable-build"` |
-| `nclaude restore [checkpoint]` | Restore from backup | `nclaude restore "stable-build"` |
-| `nclaude help-all` | Show comprehensive help | `nclaude help-all` |
-
-### Conversation Management
-
-| Command | Description | Example |
-|---------|-------------|---------|
-| `nclaude transcript list` | List captured conversations | `nclaude transcript list` |
-| `nclaude transcript show <id>` | Display conversation details | `nclaude transcript show current-session` |
-| `nclaude transcript parse <file>` | Parse Claude transcript file | `nclaude transcript parse ~/.claude/projects/.../session.jsonl` |
-
-### System Monitoring
-
-| Command | Description | Example |
-|---------|-------------|---------|
-| `nclaude monitor dashboard` | Show monitoring dashboard | `nclaude monitor dashboard` |
-| `nclaude monitor live` | Start live monitoring | `nclaude monitor live` |
-| `nclaude-monitor` | Direct access to monitor tools | `nclaude-monitor dashboard` |
-
-### Recovery & Restoration
-
-| Command | Description | Example |
-|---------|-------------|---------|
-| `nclaude recover list-edits <file>` | Show file edit history | `nclaude recover list-edits ./src/main.js` |
-| `nclaude recover restore-file <file> <id>` | Restore file to specific state | `nclaude recover restore-file ./src/main.js edit-123` |
-| `nclaude recover show-timeline` | Display activity timeline | `nclaude recover show-timeline 20` |
-| `nclaude recover list-backups` | Show available backups | `nclaude recover list-backups` |
-
-### Export & Utilities
-
-| Command | Description | Example |
-|---------|-------------|---------|
-| `nclaude export` | Export session data | `nclaude export --format markdown` |
-| `nclaude search <query>` | Search artifacts and conversations | `nclaude search "authentication"` |
-| `nclaude clean` | Clean old sessions | `nclaude clean --days 30` |
-| `nclaude timeline watch` | Start file watcher | `nclaude timeline watch` |
-
-## 🔧 Enterprise Configuration
-
-### Project Initialization
-```bash
-cd your-project
-nclaude init
-```
-
-This creates the `.nexus/` directory structure:
-```
-.nexus/
-├── conversations/     # Captured conversation data
-├── responses/        # AI responses and thinking processes
-├── edits/           # File edit history with diffs
-├── timeline/        # Git-like object storage
-├── backups/         # Automatic backup storage
-├── claude/          # Claude Code integration data
-└── sessions/        # Session management files
-```
-
-### Configuration Files
-
-#### `.nexus/claude-config.json` - Core Configuration
-```json
-{
-  "context": {
-    "maxTokens": 200000,
-    "compactionThreshold": 180000,
-    "warningThreshold": 170000
-  },
-  "capture": {
-    "conversations": true,
-    "responses": true,
-    "thinking": true,
-    "toolUse": true
-  },
-  "monitoring": {
-    "realTime": true,
-    "dashboard": true,
-    "alerts": true
-  },
-  "backup": {
-    "automatic": true,
-    "retention": "30d",
-    "compression": true
-  }
-}
-```
-
-#### `.claude/settings.local.json` - Hook Configuration
-```json
-{
-  "hooks": {
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {"type": "command", "command": ".claude/hooks/user-prompt-submit.sh"}
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {"type": "command", "command": ".claude/hooks/stop.sh"}
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": ".*",
-        "hooks": [
-          {"type": "command", "command": ".claude/hooks/post-tool-use.sh"}
-        ]
-      }
-    ]
-  }
-}
-```
-
-## 🎮 Real-World Usage Examples
-
-### Development Workflow
-```bash
-# Initialize project
-nclaude init
-
-# Start monitoring
-nclaude monitor live &
-
-# Work with Claude Code...
-# (Conversations automatically captured)
-
-# Check system status
-nclaude status
-# Token Usage: ████████████░░░░ 75% (150k/200k)
-# Conversations: 25 captured
-# Responses: 127 saved
-# Files: 42 tracked
-
-# Create checkpoint before major changes
-nclaude save "pre-refactor"
-
-# View captured conversations
-nclaude transcript list
-# current-session: 2h 45m, 127 responses, 150k tokens
-
-# Show conversation details
-nclaude transcript show current-session
-```
-
-### Recovery Scenarios
-```bash
-# Check file edit history
-nclaude recover list-edits ./src/auth.js
-# edit-123 | 2023-12-01 14:30 | Added JWT validation
-# edit-124 | 2023-12-01 14:45 | Fixed token refresh
-
-# Restore file to previous state
-nclaude recover restore-file ./src/auth.js edit-123
-
-# View system activity timeline
-nclaude recover show-timeline 10
-# 🤖 14:45 | AI response (245 chars)
-# ✏️ 14:30 | Edited auth.js
-# 💬 14:15 | Started conversation (25 turns)
-```
-
-### Data Export and Analysis
-```bash
-# Export conversations to markdown
-nclaude export --format markdown --output ./reports
-
-# Search for specific topics
-nclaude search "authentication" --type conversation
-
-# Export session archive
-nclaude export --format archive --output ./backup.zip
-```
-
-## 🔗 Claude Code Integration
-
-### Automatic Hooks
-Nexus AI integrates with Claude Code through automated hooks:
-
-- **UserPromptSubmit** - Captures every user prompt with metadata
-- **Stop** - Captures AI responses when conversation ends
-- **PostToolUse** - Tracks all file operations and tool usage
-- **SessionStart/End** - Manages session lifecycle
-- **PreCompact** - Handles conversation compaction
-
-### Slash Commands
-Use these commands directly in Claude Code:
-```
-/nclaude status              # Check session status
-/nclaude save "checkpoint"   # Create named checkpoint
-/nclaude restore            # Restore last checkpoint
-/nclaude compact            # Manually compact conversation
-```
-
-### Real-time Monitoring
-```bash
-# View live dashboard
-nclaude monitor dashboard
-
-# Start background monitoring
-nclaude monitor live
-```
-
-## 📊 Data Architecture
-
-### Storage Structure
-- **Conversations**: Complete chat history with metadata
-- **Responses**: AI responses with thinking processes extracted
-- **Timeline**: Git-like object storage for file versions
-- **Edits**: Individual file changes with full diffs
-- **Backups**: Compressed archives with retention policies
-
-### Data Formats
-- **JSON**: Structured conversation and metadata
-- **JSONL**: Claude transcript parsing
-- **Markdown**: Human-readable exports
-- **Compressed Archives**: Backup storage
-
-## 🛠️ Advanced Features
-
-### Timeline and Versioning
-```bash
-# Start file watcher
-nclaude timeline watch
-
-# Show timeline
-nclaude timeline show
-
-# Restore to specific point
-nclaude timeline restore 8
-
-# Compare two points
-nclaude timeline compare 8 12
-```
-
-### Backup Management
-```bash
-# List all backups
-nclaude recover list-backups
-
-# Restore from specific backup
-nclaude recover restore-backup 20231201-143000
-
-# Configure backup retention
-nclaude clean --days 30
-```
-
-### System Monitoring
-```bash
-# Health check
-nclaude monitor health
-
-# System status
-nclaude monitor status
-
-# Live monitoring with refresh
-nclaude monitor --refresh 5
-```
-
-## 🔍 Troubleshooting
-
-### Common Issues
-
-**Command Not Found**
-```bash
-# Ensure global installation
-npm link
-
-# Or use npx
-npx nclaude status
-```
-
-**Missing Dependencies**
-```bash
-# Reinstall
-npm install
-nclaude init
-```
-
-**Hook Configuration Issues**
-```bash
-# Test hooks
-nclaude hooks --test
-nclaude hooks --list
-```
-
-**Permission Errors (Windows)**
-- Run Command Prompt as Administrator
-- Ensure Node.js is properly installed
-- Check antivirus software restrictions
-
-### Data Recovery
-```bash
-# Emergency conversation recovery
-nclaude recover list-conversations
-
-# File restoration
-nclaude recover list-edits <file>
-nclaude recover restore-file <file> <edit-id>
-
-# Backup restoration
-nclaude recover restore-backup <timestamp>
-```
-
-## 🎯 Best Practices
-
-### Enterprise Deployment
-1. **Initialize immediately** in all new projects
-2. **Configure retention policies** based on team needs
-3. **Set up monitoring dashboards** for team visibility
-4. **Regular backup exports** for compliance
-5. **Document recovery procedures** for team members
-
-### Performance Optimization
-1. **Monitor token usage** with `nclaude status`
-2. **Use conversation compaction** before hitting limits
-3. **Regular cleanup** of old sessions
-4. **Configure appropriate retention** policies
-
-### Security Considerations
-1. **Review captured data** before sharing projects
-2. **Configure `.gitignore`** to exclude sensitive logs
-3. **Regular backup exports** to secure storage
-4. **Access control** for shared development environments
-
-## 🤝 Contributing
-
-We welcome contributions from the community:
-
-1. **Fork** the repository
-2. **Create** feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to branch (`git push origin feature/amazing-feature`)
-5. **Open** Pull Request
-
-### Development Setup
-```bash
-git clone https://github.com/nexus-framework/nexus-ai-claude.git
-cd nexus-ai-claude
-npm install
-npm run dev
-```
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🔗 Links & Support
-
-- **Repository**: [GitHub](https://github.com/nexus-framework/nexus-ai-claude)
-- **Documentation**: [Wiki](https://github.com/nexus-framework/nexus-ai-claude/wiki)
-- **Issue Tracker**: [Issues](https://github.com/nexus-framework/nexus-ai-claude/issues)
-- **Releases**: [Changelog](https://github.com/nexus-framework/nexus-ai-claude/releases)
-
-## 🏢 Enterprise Support
-
-For enterprise deployments, custom integrations, or commercial support:
-- **Email**: enterprise@nexus-ai.dev
-- **Documentation**: Full API documentation available
-- **Training**: Team onboarding and training available
-- **SLA**: Service level agreements for enterprise customers
+</div>
 
 ---
 
-**Built for professional Claude Code users who demand enterprise-grade reliability and data safety.**
+## 🌟 Why Nexus AI?
 
-*Your conversations. Your data. Your control.*
+**The Problem**: Claude AI loses context when conversations reset, making long-term projects frustrating and inefficient.
+
+**The Solution**: Nexus AI creates an everlasting memory system that:
+- 🔄 **Preserves context** across conversation boundaries
+- 📁 **Tracks every file change** with complete version history
+- 🧠 **Accumulates knowledge** from every interaction
+- ⏰ **Enables time travel** to any previous file state
+- 🤖 **Auto-recovers context** for new Claude sessions
+
+---
+
+## 🚀 Quick Start
+
+### One-Command Installation
+
+**Linux/macOS:**
+```bash
+curl -fsSL https://raw.githubusercontent.com/KamakuraCrypto/nexusai/main/nexusai/scripts/install-linux.sh | bash
+```
+
+**Windows (PowerShell as Administrator):**
+```powershell
+iwr -useb https://raw.githubusercontent.com/KamakuraCrypto/nexusai/main/nexusai/scripts/install-windows.ps1 | iex
+```
+
+### Manual Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/KamakuraCrypto/nexusai.git
+cd nexusai
+
+# Install dependencies
+npm install
+
+# Initialize in your project
+cd /path/to/your/project
+node /path/to/nexusai/nexusai/bin/nexus-memory.js init --full
+
+# Verify installation
+./nexus-memory status
+```
+
+---
+
+## 💡 Features
+
+### 🔄 Persistent Context Memory
+- **Never lose progress**: Context survives conversation resets
+- **Automatic recovery**: New Claude sessions get full context
+- **Smart consolidation**: Important information prioritized
+
+### 📁 Complete File Versioning
+- **Git-like tracking**: Every file change saved with timestamps
+- **Time travel**: Restore any file to any previous version
+- **Diff generation**: See exactly what changed between versions
+- **Real-time monitoring**: 24/7 file watching with zero overhead
+
+### 🧠 Intelligent Knowledge Accumulation
+- **Pattern recognition**: Learn from coding patterns and decisions
+- **Error tracking**: Remember solutions to problems
+- **Decision history**: Track technical choices and reasoning
+- **Learning persistence**: Knowledge builds up over time
+
+### ⚙️ Enterprise-Ready
+- **Cross-platform**: Linux, macOS, Windows support
+- **Service integration**: SystemD, LaunchAgent, Windows Service
+- **Security hardened**: Minimal permissions, isolated execution
+- **Performance optimized**: Efficient file watching and storage
+
+---
+
+## 🛠️ Installation
+
+### System Requirements
+
+- **Node.js**: v16.0.0 or higher
+- **Operating System**: Linux (Ubuntu 18.04+), macOS (10.14+), Windows 10+
+- **Disk Space**: 500MB minimum + storage for file versions
+- **Memory**: 512MB RAM minimum, 1GB recommended
+
+### Platform-Specific Installation
+
+<details>
+<summary><strong>🐧 Linux Installation</strong></summary>
+
+#### Automated Installation
+```bash
+curl -fsSL https://raw.githubusercontent.com/KamakuraCrypto/nexusai/main/nexusai/scripts/install-linux.sh | bash
+```
+
+#### Manual Installation
+```bash
+# Install prerequisites (Ubuntu/Debian)
+sudo apt-get update
+sudo apt-get install nodejs npm git
+
+# Clone and install
+git clone https://github.com/KamakuraCrypto/nexusai.git ~/nexusai
+cd ~/nexusai
+npm install --production
+
+# Initialize in your project
+cd /path/to/your/project
+node ~/nexusai/nexusai/bin/nexus-memory.js init --full
+```
+
+#### SystemD Service (Optional)
+The installer can automatically set up a SystemD service for 24/7 monitoring:
+```bash
+# Check service status
+sudo systemctl status nexus-watcher-$(whoami)
+
+# View logs
+sudo journalctl -u nexus-watcher-$(whoami) -f
+```
+
+</details>
+
+<details>
+<summary><strong>🍎 macOS Installation</strong></summary>
+
+#### Automated Installation
+```bash
+curl -fsSL https://raw.githubusercontent.com/KamakuraCrypto/nexusai/main/nexusai/scripts/install-macos.sh | bash
+```
+
+#### Manual Installation
+```bash
+# Install prerequisites with Homebrew
+brew install node git
+
+# Clone and install
+git clone https://github.com/KamakuraCrypto/nexusai.git ~/nexusai
+cd ~/nexusai
+npm install --production
+
+# Initialize in your project
+cd /path/to/your/project
+node ~/nexusai/nexusai/bin/nexus-memory.js init --full
+```
+
+#### LaunchAgent Service (Optional)
+The installer can set up a LaunchAgent for automatic startup:
+```bash
+# Check service status
+launchctl list | grep nexusai
+
+# View logs
+tail -f ~/Library/Logs/nexus-watcher.log
+```
+
+</details>
+
+<details>
+<summary><strong>🪟 Windows Installation</strong></summary>
+
+#### Automated Installation (PowerShell as Administrator)
+```powershell
+iwr -useb https://raw.githubusercontent.com/KamakuraCrypto/nexusai/main/nexusai/scripts/install-windows.ps1 | iex
+```
+
+#### Manual Installation
+```powershell
+# Install prerequisites
+winget install OpenJS.NodeJS
+winget install Git.Git
+
+# Clone and install
+git clone https://github.com/KamakuraCrypto/nexusai.git $env:USERPROFILE\nexusai
+cd $env:USERPROFILE\nexusai
+npm install --production
+
+# Initialize in your project
+cd C:\path\to\your\project
+node $env:USERPROFILE\nexusai\nexusai\bin\nexus-memory.js init --full
+```
+
+#### Windows Service (Optional)
+Run the installer as Administrator to enable Windows Service installation:
+```powershell
+# Check service status
+Get-Service NexusAI-Watcher-$env:USERNAME
+
+# View service logs in Event Viewer
+```
+
+</details>
+
+---
+
+## 📚 Documentation
+
+### Quick Reference
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `nexus-memory init` | Initialize system | `nexus-memory init --full` |
+| `nexus-memory status` | Show system status | `nexus-memory status --verbose` |
+| `nexus-memory timeline` | View change history | `nexus-memory timeline src/main.js` |
+| `nexus-memory restore` | Restore file versions | `nexus-memory restore src/main.js --list` |
+| `nexus-memory memory` | Memory management | `nexus-memory memory context` |
+| `nexus-memory daemon` | Daemon control | `nexus-memory daemon start` |
+
+### Common Workflows
+
+<details>
+<summary><strong>🔧 Initial Setup</strong></summary>
+
+```bash
+# Complete system initialization
+nexus-memory init --full
+
+# Verify everything is working
+nexus-memory status
+
+# Check daemon status
+nexus-memory daemon status
+```
+
+</details>
+
+<details>
+<summary><strong>📅 Daily Operation</strong></summary>
+
+```bash
+# View recent changes
+nexus-memory timeline
+
+# Check memory system health
+nexus-memory memory status
+
+# Update Claude context
+nexus-memory memory context
+```
+
+</details>
+
+<details>
+<summary><strong>⏰ File Recovery</strong></summary>
+
+```bash
+# List available versions
+nexus-memory restore src/main.js --list
+
+# Preview what would change
+nexus-memory restore src/main.js --preview
+
+# Restore to latest version
+nexus-memory restore src/main.js
+
+# Restore to specific timestamp
+nexus-memory restore src/main.js 1640995200000
+```
+
+</details>
+
+<details>
+<summary><strong>🧠 Knowledge Management</strong></summary>
+
+```bash
+# Auto-analyze conversations
+nexus-memory transcript analyze --watch
+
+# Process accumulated knowledge
+nexus-memory memory consolidate
+
+# Generate current context
+nexus-memory memory context --update
+```
+
+</details>
+
+### Complete Documentation
+
+- **[CLI Reference](./docs/CLI.md)** - Complete command documentation
+- **[API Documentation](./docs/API.md)** - Developer integration guide
+- **[Architecture](./docs/ARCHITECTURE.md)** - System design and components
+- **[Configuration](./docs/CONFIGURATION.md)** - Advanced configuration options
+- **[Troubleshooting](./docs/TROUBLESHOOTING.md)** - Common issues and solutions
+
+---
+
+## 🏗️ Architecture
+
+```
+Nexus AI Everlasting Memory System
+├── 🧠 Memory Consolidator      # Knowledge accumulation & context preservation
+├── 👁️  File Watcher Daemon     # 24/7 file monitoring with versioning
+├── 📝 Transcript Analyzer      # Conversation pattern extraction
+├── 💾 Version Storage          # Git-like file history management
+└── 🔄 Context Recovery         # Automatic session restoration
+```
+
+### Key Components
+
+- **Memory Consolidator**: Intelligently manages working memory and long-term storage
+- **File Watcher**: Real-time monitoring with efficient change detection
+- **Transcript Analyzer**: Extracts patterns, decisions, and learnings from conversations
+- **Version Storage**: Complete file history with diff generation
+- **Context Recovery**: Seamless context restoration for new Claude sessions
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Here's how to get started:
+
+### Development Setup
+
+```bash
+# Fork the repository
+git clone https://github.com/YOUR_USERNAME/nexusai.git
+cd nexusai
+
+# Install development dependencies
+npm install
+
+# Run tests
+npm test
+
+# Run linting
+npm run lint
+```
+
+### Contribution Guidelines
+
+1. **Fork** the repository and create a feature branch
+2. **Write tests** for new functionality
+3. **Follow** the existing code style and conventions
+4. **Update documentation** for any API changes
+5. **Submit** a pull request with a clear description
+
+### Development Priorities
+
+- 🔬 **Enhanced Pattern Recognition**: Improve AI conversation analysis
+- 🚀 **Performance Optimization**: Reduce memory usage and improve speed
+- 🔌 **IDE Integration**: VS Code, IntelliJ, and other editor plugins
+- 🌐 **Cloud Sync**: Optional cloud backup and synchronization
+- 📊 **Analytics Dashboard**: Web interface for memory visualization
+
+See our [Contributing Guide](./CONTRIBUTING.md) for detailed information.
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+
+---
+
+## 🙋 Support & Community
+
+### Getting Help
+
+- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/KamakuraCrypto/nexusai/issues)
+- 💡 **Feature Requests**: [GitHub Discussions](https://github.com/KamakuraCrypto/nexusai/discussions)
+- 📖 **Documentation**: [Wiki](https://github.com/KamakuraCrypto/nexusai/wiki)
+- 💬 **Community**: [Discord Server](https://discord.gg/nexusai) *(coming soon)*
+
+### Project Status
+
+- ✅ **Core Features**: Complete and stable
+- 🔄 **Active Development**: Regular updates and improvements
+- 🛡️ **Security**: Regular security audits and updates
+- 📈 **Growing Community**: Join us in building the future of AI memory
+
+---
+
+## 🌟 Acknowledgments
+
+Special thanks to:
+- **Anthropic** for creating Claude AI
+- **The Open Source Community** for inspiration and contributions
+- **Early Adopters** for feedback and testing
+- **Contributors** who help make Nexus AI better
+
+---
+
+<div align="center">
+
+**🧠 Never lose context again with Nexus AI! 🚀**
+
+[⭐ Star us on GitHub](https://github.com/KamakuraCrypto/nexusai) • [🐛 Report Issues](https://github.com/KamakuraCrypto/nexusai/issues) • [💬 Join Discord](https://discord.gg/nexusai)
+
+*Built with ❤️ for the AI community*
+
+</div>
