@@ -1,0 +1,131 @@
+# Source control
+.git/
+.gitignore
+.gitattributes
+
+# CI/CD
+.github/
+.travis.yml
+.appveyor.yml
+.circleci/
+azure-pipelines.yml
+
+# Testing
+test/
+tests/
+spec/
+__tests__/
+coverage/
+.nyc_output/
+*.lcov
+test-results/
+test-reports/
+
+# Documentation source
+docs/src/
+docs/build/
+*.md.backup
+
+# Development files
+.env*
+!.env.example
+nexus.config.local.js
+dev-test/
+examples/local/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# OS specific
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Build tools
+webpack.config.js
+rollup.config.js
+gulpfile.js
+Gruntfile.js
+
+# Linting and formatting
+.eslintrc*
+.prettierrc*
+.editorconfig
+
+# Package manager
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+yarn.lock
+
+# Development dependencies artifacts
+node_modules/
+jspm_packages/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+*.log
+logs/
+
+# Backup files
+*.backup
+*.bak
+*.orig
+
+# Release artifacts that shouldn't be in npm
+releases/
+*.zip
+*.tar.gz
+*.dmg
+*.pkg
+*.deb
+*.rpm
+*.msi
+
+# Service files (platform-specific, generated during install)
+nexus-watcher-*.service
+nexus-service-wrapper.bat
+com.nexusai.watcher.*.plist
+
+# Local test artifacts
+.nexus/
+CLAUDE.md
+nexus-memory
+nexus-memory.bat
+test.js*
+sample-transcript.jsonl
+
+# Development scripts
+scripts/dev-*
+scripts/test-*
+
+# Benchmark results
+benchmarks/results/
+
+# Security files
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# Local configuration overrides
+config/local.js
+config/development.js
+config/test.js
