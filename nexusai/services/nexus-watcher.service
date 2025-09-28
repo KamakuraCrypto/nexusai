@@ -1,0 +1,34 @@
+[Unit]
+Description=Nexus AI File Watcher Daemon
+Documentation=https://github.com/KamakuraCrypto/nexusai
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=%USER%
+Group=%GROUP%
+WorkingDirectory=%PROJECT_ROOT%
+Environment=NODE_ENV=production
+Environment=NEXUS_PROJECT_ROOT=%PROJECT_ROOT%
+Environment=NEXUS_LOG_LEVEL=info
+ExecStart=%NODE_PATH% %NEXUS_ROOT%/nexusai/daemon/nexus-watcher.js
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=nexus-watcher
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=%PROJECT_ROOT%
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+
+[Install]
+WantedBy=multi-user.target
