@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Nexus AI Everlasting Memory System - Linux Installation Script
+# Nexus AI - Linux Installation Script
 # https://github.com/KamakuraCrypto/nexusai
 
 set -e
@@ -17,7 +17,7 @@ REPO_URL="https://github.com/KamakuraCrypto/nexusai.git"
 INSTALL_DIR="$HOME/nexusai"
 PROJECT_ROOT="$(pwd)"
 
-echo -e "${BLUE}🧠 Nexus AI Everlasting Memory System - Linux Installer${NC}"
+echo -e "${BLUE}🧠 Nexus AI - Linux Installer${NC}"
 echo -e "${BLUE}==========================================================${NC}"
 echo ""
 
@@ -106,7 +106,7 @@ echo -e "${YELLOW}📦 Installing dependencies...${NC}"
 npm install --production
 
 # Make scripts executable
-chmod +x nexusai/bin/nexus-memory.js
+chmod +x nexusai/bin/nclaude.js
 chmod +x nexusai/daemon/nexus-watcher.js
 chmod +x nexusai/scripts/*.sh
 
@@ -117,16 +117,16 @@ echo ""
 echo -e "${YELLOW}🚀 Initializing Nexus AI in current project...${NC}"
 cd "$PROJECT_ROOT"
 
-# Create symlink to nexus-memory command
-NEXUS_BIN="$INSTALL_DIR/nexusai/bin/nexus-memory.js"
-LOCAL_BIN="./nexus-memory"
+# Create symlink to nclaude command
+NEXUS_BIN="$INSTALL_DIR/nexusai/bin/nclaude.js"
+LOCAL_BIN="./nclaude"
 
 if [[ -L "$LOCAL_BIN" ]] || [[ -f "$LOCAL_BIN" ]]; then
     rm -f "$LOCAL_BIN"
 fi
 
 ln -s "$NEXUS_BIN" "$LOCAL_BIN"
-echo -e "${GREEN}✅ Created nexus-memory command link${NC}"
+echo -e "${GREEN}✅ Created nclaude command link${NC}"
 
 # Initialize the system
 echo -e "${YELLOW}🔧 Initializing memory system...${NC}"
@@ -186,20 +186,20 @@ echo ""
 echo -e "${BLUE}📚 Getting Started:${NC}"
 echo ""
 echo "1. Check system status:"
-echo "   ./nexus-memory status"
+echo "   ./nclaude status"
 echo ""
 echo "2. View change timeline:"
-echo "   ./nexus-memory timeline"
+echo "   ./nclaude timeline"
 echo ""
 echo "3. Start daemon manually (if not using SystemD):"
-echo "   ./nexus-memory daemon start --background"
+echo "   ./nclaude daemon start --background"
 echo ""
 echo "4. Generate context for Claude:"
-echo "   ./nexus-memory memory context"
+echo "   ./nclaude memory context"
 echo ""
 echo -e "${BLUE}📖 Documentation:${NC}"
 echo "   Full documentation: $INSTALL_DIR/README.md"
-echo "   CLI reference: ./nexus-memory --help"
+echo "   CLI reference: ./nclaude --help"
 echo "   GitHub: $REPO_URL"
 echo ""
 echo -e "${BLUE}🛠️  System Files:${NC}"

@@ -1,4 +1,4 @@
-# 🧠 Nexus AI Everlasting Memory System
+# 🧠 Nexus AI
 
 <div align="center">
 
@@ -8,9 +8,9 @@
 [![GitHub Issues](https://img.shields.io/github/issues/KamakuraCrypto/nexusai.svg)](https://github.com/KamakuraCrypto/nexusai/issues)
 [![GitHub Stars](https://img.shields.io/github/stars/KamakuraCrypto/nexusai.svg)](https://github.com/KamakuraCrypto/nexusai/stargazers)
 
-**Never lose context again!** 
+**Your Claude companion for persistent memory** 
 
-The Nexus AI Everlasting Memory System provides persistent AI memory across Claude conversation resets, 24/7 file monitoring with Git-like versioning, and intelligent knowledge accumulation.
+Never lose context again! Nexus AI enhances Claude with persistent memory across conversation resets, 24/7 file monitoring with Git-like versioning, and intelligent knowledge accumulation.
 
 [🚀 Quick Start](#-quick-start) • [📚 Documentation](#-documentation) • [💡 Features](#-features) • [🛠️ Installation](#️-installation) • [🤝 Contributing](#-contributing)
 
@@ -22,7 +22,7 @@ The Nexus AI Everlasting Memory System provides persistent AI memory across Clau
 
 **The Problem**: Claude AI loses context when conversations reset, making long-term projects frustrating and inefficient.
 
-**The Solution**: Nexus AI creates an everlasting memory system that:
+**The Solution**: Nexus AI becomes Claude's memory companion, providing:
 - 🔄 **Preserves context** across conversation boundaries
 - 📁 **Tracks every file change** with complete version history
 - 🧠 **Accumulates knowledge** from every interaction
@@ -57,10 +57,10 @@ npm install
 
 # Initialize in your project
 cd /path/to/your/project
-node /path/to/nexusai/nexusai/bin/nexus-memory.js init --full
+node /path/to/nexusai/nexusai/bin/nclaude.js init --full
 
 # Verify installation
-./nexus-memory status
+./nclaude status
 ```
 
 ---
@@ -124,7 +124,7 @@ npm install --production
 
 # Initialize in your project
 cd /path/to/your/project
-node ~/nexusai/nexusai/bin/nexus-memory.js init --full
+node ~/nexusai/nexusai/bin/nclaude.js init --full
 ```
 
 #### SystemD Service (Optional)
@@ -159,7 +159,7 @@ npm install --production
 
 # Initialize in your project
 cd /path/to/your/project
-node ~/nexusai/nexusai/bin/nexus-memory.js init --full
+node ~/nexusai/nexusai/bin/nclaude.js init --full
 ```
 
 #### LaunchAgent Service (Optional)
@@ -195,7 +195,7 @@ npm install --production
 
 # Initialize in your project
 cd C:\path\to\your\project
-node $env:USERPROFILE\nexusai\nexusai\bin\nexus-memory.js init --full
+node $env:USERPROFILE\nexusai\nexusai\bin\nclaude.js init --full
 ```
 
 #### Windows Service (Optional)
@@ -217,12 +217,12 @@ Get-Service NexusAI-Watcher-$env:USERNAME
 
 | Command | Description | Example |
 |---------|-------------|---------|
-| `nexus-memory init` | Initialize system | `nexus-memory init --full` |
-| `nexus-memory status` | Show system status | `nexus-memory status --verbose` |
-| `nexus-memory timeline` | View change history | `nexus-memory timeline src/main.js` |
-| `nexus-memory restore` | Restore file versions | `nexus-memory restore src/main.js --list` |
-| `nexus-memory memory` | Memory management | `nexus-memory memory context` |
-| `nexus-memory daemon` | Daemon control | `nexus-memory daemon start` |
+| `nclaude init` | Initialize system | `nclaude init --full` |
+| `nclaude status` | Show system status | `nclaude status --verbose` |
+| `nclaude timeline` | View change history | `nclaude timeline src/main.js` |
+| `nclaude restore` | Restore file versions | `nclaude restore src/main.js --list` |
+| `nclaude memory` | Memory management | `nclaude memory context` |
+| `nclaude daemon` | Daemon control | `nclaude daemon start` |
 
 ### Common Workflows
 
@@ -231,13 +231,13 @@ Get-Service NexusAI-Watcher-$env:USERNAME
 
 ```bash
 # Complete system initialization
-nexus-memory init --full
+nclaude init --full
 
 # Verify everything is working
-nexus-memory status
+nclaude status
 
 # Check daemon status
-nexus-memory daemon status
+nclaude daemon status
 ```
 
 </details>
@@ -247,13 +247,13 @@ nexus-memory daemon status
 
 ```bash
 # View recent changes
-nexus-memory timeline
+nclaude timeline
 
 # Check memory system health
-nexus-memory memory status
+nclaude memory status
 
 # Update Claude context
-nexus-memory memory context
+nclaude memory context
 ```
 
 </details>
@@ -263,16 +263,16 @@ nexus-memory memory context
 
 ```bash
 # List available versions
-nexus-memory restore src/main.js --list
+nclaude restore src/main.js --list
 
 # Preview what would change
-nexus-memory restore src/main.js --preview
+nclaude restore src/main.js --preview
 
 # Restore to latest version
-nexus-memory restore src/main.js
+nclaude restore src/main.js
 
 # Restore to specific timestamp
-nexus-memory restore src/main.js 1640995200000
+nclaude restore src/main.js 1640995200000
 ```
 
 </details>
@@ -282,31 +282,28 @@ nexus-memory restore src/main.js 1640995200000
 
 ```bash
 # Auto-analyze conversations
-nexus-memory transcript analyze --watch
+nclaude transcript analyze --watch
 
 # Process accumulated knowledge
-nexus-memory memory consolidate
+nclaude memory consolidate
 
 # Generate current context
-nexus-memory memory context --update
+nclaude memory context --update
 ```
 
 </details>
 
 ### Complete Documentation
 
-- **[CLI Reference](./docs/CLI.md)** - Complete command documentation
-- **[API Documentation](./docs/API.md)** - Developer integration guide
-- **[Architecture](./docs/ARCHITECTURE.md)** - System design and components
-- **[Configuration](./docs/CONFIGURATION.md)** - Advanced configuration options
-- **[Troubleshooting](./docs/TROUBLESHOOTING.md)** - Common issues and solutions
+- **CLI Reference** - Use `nclaude --help` for complete command documentation
+- **GitHub Repository** - Full source code and examples
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-Nexus AI Everlasting Memory System
+Nexus AI
 ├── 🧠 Memory Consolidator      # Knowledge accumulation & context preservation
 ├── 👁️  File Watcher Daemon     # 24/7 file monitoring with versioning
 ├── 📝 Transcript Analyzer      # Conversation pattern extraction

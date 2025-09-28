@@ -1,4 +1,4 @@
-# Nexus AI Everlasting Memory System - Windows Installation Script
+# Nexus AI - Windows Installation Script
 # https://github.com/KamakuraCrypto/nexusai
 
 param(
@@ -34,7 +34,7 @@ function Test-Command {
 # Configuration
 $RepoUrl = "https://github.com/KamakuraCrypto/nexusai.git"
 
-Write-ColorText "🧠 Nexus AI Everlasting Memory System - Windows Installer" $Blue
+Write-ColorText "🧠 Nexus AI - Windows Installer" $Blue
 Write-ColorText "=========================================================" $Blue
 Write-Host ""
 
@@ -125,9 +125,9 @@ Write-Host ""
 Write-ColorText "🚀 Initializing Nexus AI in current project..." $Yellow
 Set-Location $ProjectRoot
 
-# Create batch file for nexus-memory command
-$nexusBin = "$InstallDir\nexusai\bin\nexus-memory.js"
-$localBat = ".\nexus-memory.bat"
+# Create batch file for nclaude command
+$nexusBin = "$InstallDir\nexusai\bin\nclaude.js"
+$localBat = ".\nclaude.bat"
 
 if (Test-Path $localBat) {
     Remove-Item $localBat -Force
@@ -138,7 +138,7 @@ if (Test-Path $localBat) {
 node "$nexusBin" %*
 "@ | Out-File -FilePath $localBat -Encoding ASCII
 
-Write-ColorText "✅ Created nexus-memory.bat command" $Green
+Write-ColorText "✅ Created nclaude.bat command" $Green
 
 # Initialize the system
 Write-ColorText "🔧 Initializing memory system..." $Yellow
@@ -200,20 +200,20 @@ Write-Host ""
 Write-ColorText "📚 Getting Started:" $Blue
 Write-Host ""
 Write-Host "1. Check system status:"
-Write-Host "   .\nexus-memory.bat status"
+Write-Host "   .\nclaude.bat status"
 Write-Host ""
 Write-Host "2. View change timeline:"
-Write-Host "   .\nexus-memory.bat timeline"
+Write-Host "   .\nclaude.bat timeline"
 Write-Host ""
 Write-Host "3. Start daemon manually (if not using Windows Service):"
-Write-Host "   .\nexus-memory.bat daemon start --background"
+Write-Host "   .\nclaude.bat daemon start --background"
 Write-Host ""
 Write-Host "4. Generate context for Claude:"
-Write-Host "   .\nexus-memory.bat memory context"
+Write-Host "   .\nclaude.bat memory context"
 Write-Host ""
 Write-ColorText "📖 Documentation:" $Blue
 Write-Host "   Full documentation: $InstallDir\README.md"
-Write-Host "   CLI reference: .\nexus-memory.bat --help"
+Write-Host "   CLI reference: .\nclaude.bat --help"
 Write-Host "   GitHub: $RepoUrl"
 Write-Host ""
 Write-ColorText "🛠️  System Files:" $Blue

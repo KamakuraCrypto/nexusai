@@ -1,20 +1,20 @@
 {
   "name": "nexusai",
   "version": "1.0.0",
-  "description": "🧠 Nexus AI Everlasting Memory System - Never lose context again! Persistent AI memory across Claude conversations with 24/7 file monitoring and intelligent knowledge accumulation.",
-  "main": "nexusai/bin/nexus-memory.js",
+  "description": "🧠 Nexus AI - Your Claude companion for persistent memory. Never lose context again! Enhances Claude with persistent memory across conversations and intelligent knowledge accumulation.",
+  "main": "nexusai/bin/nclaude.js",
   "bin": {
-    "nexus-memory": "nexusai/bin/nexus-memory.js"
+    "nclaude": "nexusai/bin/nclaude.js"
   },
   "scripts": {
-    "start": "node nexusai/bin/nexus-memory.js",
+    "start": "node nexusai/bin/nclaude.js",
     "daemon": "node nexusai/daemon/nexus-watcher.js",
     "install-linux": "bash nexusai/scripts/install-linux.sh",
     "install-macos": "bash nexusai/scripts/install-macos.sh",
     "install-windows": "powershell -ExecutionPolicy Bypass -File nexusai/scripts/install-windows.ps1",
     "test": "echo \"Tests not yet implemented\" && exit 0",
     "lint": "echo \"Linting not yet implemented\" && exit 0",
-    "postinstall": "echo \"📦 Nexus AI installed successfully! Run 'nexus-memory init --full' to get started.\""
+    "postinstall": "echo \"📦 Nexus AI installed successfully! Run 'nclaude init --full' to get started.\""
   },
   "repository": {
     "type": "git",
