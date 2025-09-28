@@ -35,10 +35,17 @@ Never lose context again! Nexus AI enhances Claude with persistent memory across
 
 ### One-Command Installation
 
-**Linux/macOS:**
+**Linux/macOS (Regular User):**
 ```bash
 curl -fsSL https://raw.githubusercontent.com/KamakuraCrypto/nexusai/main/nexusai/scripts/install-linux.sh | bash
 ```
+
+**Linux/macOS (Root/System-wide):**
+```bash
+curl -fsSL https://raw.githubusercontent.com/KamakuraCrypto/nexusai/main/nexusai/scripts/install-linux.sh | bash -s -- --allow-root
+```
+
+> **Note:** Root installation installs to `/opt/nexusai` and creates system-wide commands. Regular user installation is recommended for development work.
 
 **Windows (PowerShell as Administrator):**
 ```powershell
@@ -106,10 +113,17 @@ node /path/to/nexusai/nexusai/bin/nclaude.js init --full
 <details>
 <summary><strong>🐧 Linux Installation</strong></summary>
 
-#### Automated Installation
+#### Automated Installation (Regular User)
 ```bash
 curl -fsSL https://raw.githubusercontent.com/KamakuraCrypto/nexusai/main/nexusai/scripts/install-linux.sh | bash
 ```
+
+#### Automated Installation (Root/System-wide)
+```bash
+curl -fsSL https://raw.githubusercontent.com/KamakuraCrypto/nexusai/main/nexusai/scripts/install-linux.sh | bash -s -- --allow-root
+```
+
+> **⚠️ Root Installation Warning:** Installing as root creates a system-wide installation in `/opt/nexusai` with files owned by root. This may cause permission issues with project files. Consider creating a regular user account for development work.
 
 #### Manual Installation
 ```bash
