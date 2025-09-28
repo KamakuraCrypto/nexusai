@@ -1,0 +1,178 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
+.grunt
+
+# Bower dependency directory (https://bower.io/)
+bower_components
+
+# node-waf configuration
+.lock-wscript
+
+# Compiled binary addons (https://nodejs.org/api/addons.html)
+build/Release
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# TypeScript v1 declaration files
+typings/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+.env.test
+.env.development
+.env.production
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# Next.js build output
+.next
+
+# Nuxt.js build / generate output
+.nuxt
+dist
+
+# Gatsby files
+.cache/
+# Comment in the public line in if your project uses Gatsby and *not* Next.js
+# https://nextjs.org/blog/next-9-1#public-directory-support
+# public
+
+# vuepress build output
+.vuepress/dist
+
+# Serverless directories
+.serverless/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Operating System
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Test artifacts
+test-results/
+test-reports/
+coverage/
+
+# Build artifacts
+build/
+dist/
+lib/
+*.tgz
+*.tar.gz
+
+# Nexus AI specific files
+# Note: Don't ignore .nexus in projects using the system
+# .nexus/
+
+# Development and testing
+dev-test/
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Local configuration
+nexus.config.local.js
+.env.local
+
+# Backup files
+*.backup
+*.bak
+*.orig
+
+# Lock files (keep package-lock.json for reproducible builds)
+# yarn.lock
+
+# Documentation builds
+docs/build/
+docs/dist/
+
+# Release artifacts
+releases/
+*.zip
+*.tar.gz
+*.dmg
+*.pkg
+*.deb
+*.rpm
+*.msi
+
+# MacOS LaunchAgent logs
+~/Library/Logs/nexus-watcher.log
+~/Library/Logs/nexus-watcher-error.log
+
+# Windows Service logs
+*.evtx
+
+# Service files (these are generated during installation)
+nexus-watcher-*.service
+nexus-service-wrapper.bat
+com.nexusai.watcher.*.plist
