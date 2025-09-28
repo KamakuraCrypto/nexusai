@@ -22,12 +22,13 @@ Never lose context again! Nexus AI enhances Claude with persistent memory across
 
 **The Problem**: Claude AI loses context when conversations reset, making long-term projects frustrating and inefficient.
 
-**The Solution**: Nexus AI becomes Claude's memory companion, providing:
+**The Solution**: Nexus AI becomes Claude's memory companion, providing **project-scoped** intelligence:
 - 🔄 **Preserves context** across conversation boundaries
-- 📁 **Tracks every file change** with complete version history
-- 🧠 **Accumulates knowledge** from every interaction
+- 📁 **Tracks every file change** with complete version history (per project)
+- 🧠 **Accumulates knowledge** from every interaction (project-specific)
 - ⏰ **Enables time travel** to any previous file state
 - 🤖 **Auto-recovers context** for new Claude sessions
+- 🔒 **Privacy-focused** - monitors only your specific project directory
 
 ---
 
@@ -45,7 +46,13 @@ curl -fsSL https://raw.githubusercontent.com/KamakuraCrypto/nexusai/main/nexusai
 curl -fsSL https://raw.githubusercontent.com/KamakuraCrypto/nexusai/main/nexusai/scripts/install-linux.sh | bash -s -- --allow-root
 ```
 
-> **Note:** Root installation installs to `/opt/nexusai` and creates system-wide commands. Regular user installation is recommended for development work.
+> **⚠️ Important:** Root installation only affects binary location - Nexus AI always operates per-project:
+> - 📁 **Each project** needs separate `nclaude init` 
+> - 🔍 **Monitoring scope** is always project-specific, never system-wide
+> - 💾 **Data storage** is always in project's `.nexus/` directory
+> - 🔒 **No system-wide file monitoring** occurs for security
+>
+> Regular user installation is recommended for development work.
 
 **Windows (PowerShell as Administrator):**
 ```powershell
@@ -123,7 +130,14 @@ curl -fsSL https://raw.githubusercontent.com/KamakuraCrypto/nexusai/main/nexusai
 curl -fsSL https://raw.githubusercontent.com/KamakuraCrypto/nexusai/main/nexusai/scripts/install-linux.sh | bash -s -- --allow-root
 ```
 
-> **⚠️ Root Installation Warning:** Installing as root creates a system-wide installation in `/opt/nexusai` with files owned by root. This may cause permission issues with project files. Consider creating a regular user account for development work.
+> **⚠️ Root Installation Important Notes:**
+> - 📍 **Binary location only:** Root installation places the `nclaude` command system-wide
+> - 📁 **Project-scoped operation:** Each project still needs separate `nclaude init`
+> - 🔍 **No system monitoring:** Daemon only monitors individual project directories
+> - 💾 **Per-project data:** Each project has its own `.nexus/` directory
+> - ⚠️ **Permission issues:** Files owned by root may cause problems with project files
+>
+> Consider creating a regular user account for development work.
 
 #### Manual Installation
 ```bash

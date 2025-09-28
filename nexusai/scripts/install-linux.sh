@@ -59,7 +59,11 @@ if [[ $EUID -eq 0 ]]; then
         exit 1
     else
         echo -e "${YELLOW}⚠️  WARNING: Running as root with --allow-root flag${NC}"
-        echo -e "${YELLOW}   This will install Nexus AI system-wide to /opt/nexusai${NC}"
+        echo -e "${YELLOW}   This installs the Nexus AI binary system-wide to /opt/nexusai${NC}"
+        echo -e "${YELLOW}   However, Nexus AI operation is ALWAYS project-specific.${NC}"
+        echo -e "${BLUE}   • Each project needs separate initialization${NC}"
+        echo -e "${BLUE}   • Daemon monitors only the specific project directory${NC}"
+        echo -e "${BLUE}   • No system-wide file monitoring occurs${NC}"
         echo -e "${YELLOW}   Files will be owned by root. Consider using a regular user instead.${NC}"
         echo ""
         sleep 3
@@ -189,8 +193,12 @@ else
     echo -e "${GREEN}✅ Created nclaude command link${NC}"
 fi
 
-# Initialize the system
-echo -e "${YELLOW}🔧 Initializing memory system...${NC}"
+# Initialize the system for this project only
+echo -e "${YELLOW}🔧 Initializing memory system for this project...${NC}"
+echo -e "${BLUE}ℹ️  This creates .nexus/ directory in: $PROJECT_ROOT${NC}"
+if [[ $EUID -eq 0 ]] && [[ "$ALLOW_ROOT" == true ]]; then
+    echo -e "${YELLOW}⚠️  Note: You'll need to run 'nclaude init' in each project directory${NC}"
+fi
 node "$NEXUS_BIN" init --memory-only
 
 # Setup SystemD service (optional)
@@ -198,21 +206,26 @@ if [[ "$SYSTEMD_AVAILABLE" == true ]]; then
     echo ""
     echo -e "${YELLOW}⚙️  SystemD Service Setup${NC}"
     
-    # Different handling for root vs user installation
+    # Project-specific service handling (same for both root and user installations)
+    # Note: Nexus AI is always project-scoped, even with system-wide binary installation
+    
+    PROJECT_NAME=$(basename "$PROJECT_ROOT")
     if [[ $EUID -eq 0 ]] && [[ "$ALLOW_ROOT" == true ]]; then
-        echo -e "${YELLOW}⚠️  Root installation detected - SystemD service will be system-wide${NC}"
-        echo "Do you want to install the system-wide SystemD service for 24/7 file monitoring? (y/N)"
+        echo -e "${YELLOW}⚠️  Root installation detected${NC}"
+        echo -e "${BLUE}ℹ️  Note: Nexus AI daemon monitors only THIS project directory: $PROJECT_ROOT${NC}"
+        echo -e "${BLUE}ℹ️  Each project needs its own daemon service for monitoring.${NC}"
+        echo "Do you want to install the SystemD service for monitoring this project? (y/N)"
         read -r INSTALL_SERVICE
         
         if [[ "$INSTALL_SERVICE" =~ ^[Yy]$ ]]; then
-            echo -e "${YELLOW}📋 Installing system-wide SystemD service...${NC}"
+            echo -e "${YELLOW}📋 Installing project-specific SystemD service...${NC}"
             
-            # Prepare service file for system-wide installation
-            SERVICE_NAME="nexus-watcher-system"
+            # Create project-specific service (even for root installation)
+            SERVICE_NAME="nexus-watcher-$PROJECT_NAME-root"
             SERVICE_FILE="/tmp/$SERVICE_NAME.service"
             cp "$INSTALL_DIR/nexusai/services/nexus-watcher.service" "$SERVICE_FILE"
             
-            # Replace placeholders for system service
+            # Replace placeholders for project-specific service
             sed -i "s|%USER%|root|g" "$SERVICE_FILE"
             sed -i "s|%GROUP%|root|g" "$SERVICE_FILE"
             sed -i "s|%PROJECT_ROOT%|$PROJECT_ROOT|g" "$SERVICE_FILE"
@@ -225,12 +238,14 @@ if [[ "$SYSTEMD_AVAILABLE" == true ]]; then
             systemctl enable "$SERVICE_NAME.service"
             
             # Start service
-            echo -e "${YELLOW}🚀 Starting Nexus AI daemon...${NC}"
+            echo -e "${YELLOW}🚀 Starting Nexus AI daemon for project: $PROJECT_NAME...${NC}"
             systemctl start "$SERVICE_NAME.service"
             
             # Check status
             if systemctl is-active --quiet "$SERVICE_NAME.service"; then
-                echo -e "${GREEN}✅ System-wide SystemD service installed and started successfully${NC}"
+                echo -e "${GREEN}✅ Project-specific SystemD service installed and started successfully${NC}"
+                echo -e "${GREEN}   Service name: $SERVICE_NAME${NC}"
+                echo -e "${GREEN}   Monitoring: $PROJECT_ROOT${NC}"
                 SYSTEMD_SERVICE_NAME="$SERVICE_NAME"
             else
                 echo -e "${RED}❌ SystemD service failed to start${NC}"
@@ -241,12 +256,13 @@ if [[ "$SYSTEMD_AVAILABLE" == true ]]; then
             rm -f "$SERVICE_FILE"
         else
             echo -e "${YELLOW}⏭️  Skipping SystemD service installation${NC}"
-            echo "You can start the daemon manually with:"
-            echo "  node $NEXUS_BIN daemon start --background"
+            echo "You can start the daemon manually for this project with:"
+            echo "  cd $PROJECT_ROOT && node $NEXUS_BIN daemon start --background"
         fi
     else
-        # Standard user installation
-        echo "Do you want to install the SystemD service for 24/7 file monitoring? (y/N)"
+        # Standard user installation - also project-specific
+        echo -e "${BLUE}ℹ️  Note: Nexus AI daemon monitors only THIS project directory: $PROJECT_ROOT${NC}"
+        echo "Do you want to install the SystemD service for monitoring this project? (y/N)"
         read -r INSTALL_SERVICE
         
         if [[ "$INSTALL_SERVICE" =~ ^[Yy]$ ]]; then

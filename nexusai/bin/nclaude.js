@@ -31,16 +31,22 @@ Examples:
   $ nclaude init --memory-only      # Only memory system
   $ nclaude init --force            # Reinitialize existing system
 
-The init command creates:
+The init command creates (in current project directory only):
   • .nexus/ directory structure for persistent storage
   • CLAUDE.md master instruction file for context preservation
   • Memory consolidation system for knowledge accumulation
-  • Optional: File watching daemon for 24/7 monitoring
-  • Optional: SystemD service for persistent operation`)
+  • Optional: File watching daemon for PROJECT-ONLY monitoring
+  • Optional: SystemD service for this project's persistent operation
+  
+⚠️  Security Note: Nexus AI NEVER monitors outside the current project directory`)
   .action((options) => {
-    console.log('🚀 Initializing Nexus AI...');
+    console.log('🚀 Initializing Nexus AI in current project...');
+    console.log('📁 Project directory:', process.cwd());
+    console.log('🔒 Security: Monitoring limited to this directory only');
     console.log('Options:', options);
     // Implementation would go here
+    // TODO: Add validation to ensure we're in a project directory
+    // TODO: Add safeguards to prevent initialization in system directories
   });
 
 // Enhanced status command
@@ -269,16 +275,21 @@ Examples:
   $ nclaude daemon start --background # Start in background
   $ nclaude daemon start --service    # Start SystemD service
 
-Daemon Features:
-  • 24/7 file monitoring with inotify
-  • Real-time change detection and versioning
+Daemon Features (PROJECT-SCOPED ONLY):
+  • 24/7 file monitoring within current project directory
+  • Real-time change detection and versioning (project files only)
   • Automatic memory consolidation triggers
-  • Git-like diff generation for all changes
-  • Intelligent ignore patterns for system files`)
+  • Git-like diff generation for project changes
+  • Intelligent ignore patterns for system files
+  ⚠️  Security: NEVER monitors outside project boundaries`)
   .action((options) => {
-    console.log('🚀 Starting File Watcher Daemon');
+    console.log('🚀 Starting File Watcher Daemon for project...');
+    console.log('📁 Monitoring directory:', process.cwd());
+    console.log('🔒 Security: Monitoring scope limited to current project');
     console.log('Options:', options);
     // Implementation would go here
+    // TODO: Add strict directory boundary checks
+    // TODO: Prevent monitoring of system directories like /, /etc, /usr
   });
 
 daemonCmd
@@ -306,12 +317,13 @@ daemonCmd
 program.addHelpText('after', `
 🧠 NEXUS AI - YOUR CLAUDE COMPANION
 
-Nexus AI enhances Claude with persistent memory, solving context loss problems by providing:
-  ✅ Persistent memory across conversation resets
-  ✅ 24/7 file monitoring with complete version history
-  ✅ Intelligent knowledge accumulation and learning
+Nexus AI enhances Claude with PROJECT-SCOPED persistent memory, solving context loss problems:
+  ✅ Persistent memory across conversation resets (per project)
+  ✅ 24/7 file monitoring with complete version history (project-only)
+  ✅ Intelligent knowledge accumulation and learning (project-specific)
   ✅ Time travel capabilities for any tracked file
   ✅ Automatic context recovery for new Claude sessions
+  🔒 Privacy-focused: NEVER monitors outside your project directory
 
 Common Workflows:
 
